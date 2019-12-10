@@ -117,7 +117,6 @@ export default function SearchAppBar() {
   };
 
   const handleCloseMenu = () => {
-    console.log('closing');
     setAnchorEl(null);
   };
 
@@ -172,13 +171,10 @@ const signOut = () => {
 
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-      // console.log('userrrrrrrr', user.photoURL);
       setUserSt(user.photoURL);
-      console.log('userrrr', userSt);
 
     }
     else {
-      console.log('user left from bar');
       setUserSt(false);
     }
 
@@ -223,7 +219,7 @@ const signOut = () => {
 
   const avatar = (
     <div className={classes.root} onClick={handleMenu}>
-      {console.log('avatar', userSt)}
+      
       <Avatar alt="Remy Sharp" src={userSt} />
     </div>
   );

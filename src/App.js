@@ -10,6 +10,13 @@ import Login from './Login'
 
 
 const App = () => {
+
+
+useEffect(()=>{
+  console.log('effect');
+  
+})
+
       return (
       <div className="App">
         <>
