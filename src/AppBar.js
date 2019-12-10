@@ -20,8 +20,13 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import firebase from 'firebase'
+
+const provider = new firebase.auth.GoogleAuthProvider();
+provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -111,7 +116,10 @@ export default function SearchAppBar() {
     setAnchorEl(event.currentTarget);
   };
 
-
+  const handleCloseMenu = () => {
+    console.log('closing');
+    setAnchorEl(null);
+  };
 
   function handleClose(event, reason) {
     if (reason === 'clickaway') {
@@ -120,6 +128,29 @@ export default function SearchAppBar() {
 
     setOpen(false);
   }
+
+  const login = e => {
+    firebase.auth().signInWithRedirect(provider).then(function (result) {
+       // console.log('login');
+
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        //  var token = result.credential.accessToken;
+        // The signed-in user info.
+        //  var user = result.user;
+        // ...
+    }).catch(function (error) {
+        // Handle Errors here.
+        //   var errorCode = error.code;
+        //  var errorMessage = error.message;
+        // The email of the user's account used.
+        //  var email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        // var credential = error.credential;
+        // ...
+    });
+    setAnchorEl(null);
+}
+
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [userSt, setUserSt] = React.useState(false);
@@ -134,12 +165,12 @@ export default function SearchAppBar() {
     if (user) {
       // console.log('userrrrrrrr', user.photoURL);
       setUserSt(user.photoURL);
-       console.log('userrrr', userSt);
+      console.log('userrrr', userSt);
 
     }
     else {
       console.log('user left from bar');
-      setUserSt('none');
+      setUserSt(false);
     }
 
     ;
@@ -182,11 +213,25 @@ export default function SearchAppBar() {
   );
 
   const avatar = (
-    <div className={classes.root}>
+    <div className={classes.root} onClick={handleMenu}>
       {console.log('avatar', userSt)}
       <Avatar alt="Remy Sharp" src={userSt} />
     </div>
   );
+
+  const menu = (
+    <Menu
+      id="simple-menu"
+      anchorEl={anchorEl}
+      keepMounted
+      open={Boolean(anchorEl)}
+      onClose={handleCloseMenu}
+    >
+     {!userSt ? <MenuItem onClick={login}>Log In</MenuItem> : <MenuItem >Profile</MenuItem> }
+      <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
+      <MenuItem onClick={handleCloseMenu}>Logout</MenuItem>
+    </Menu>
+  )
 
 
 
@@ -254,11 +299,11 @@ export default function SearchAppBar() {
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
-            onClick={handleMenu}
+            
             color="inherit"
           >
-            
             {avatar}
+            {menu}
           </IconButton>
         </Toolbar>
       </AppBar>
