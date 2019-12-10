@@ -12,20 +12,20 @@ import Login from './Login'
 const App = () => {
 
 
-  // useEffect(() => {
-  //   console.log('effect');
+  useEffect(() => {
+    console.log('effect');
+  })
 
-  // })
 
   const [usr, setUsr] = useState(false)
 
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-      const name = user.displayName;
-      const email = user.email;
-      const pphotoUrl = user.photoURL;
-      const eemailVerified = user.emailVerified;
-      const uuid = user.uid;
+      // const name = user.displayName;
+      // const email = user.email;
+      // const pphotoUrl = user.photoURL;
+      // const eemailVerified = user.emailVerified;
+      // const uuid = user.uid;
       setUsr(user)
       console.log('user app', usr);
     } else {

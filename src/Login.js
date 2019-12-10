@@ -33,11 +33,11 @@ const useStyles = makeStyles({
 
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-            const name = user.displayName;
-            const email = user.email;
-            const pphotoUrl = user.photoURL;
-            const eemailVerified = user.emailVerified;
-            const uuid = user.uid;
+            // const name = user.displayName;
+            // const email = user.email;
+            // const pphotoUrl = user.photoURL;
+            // const eemailVerified = user.emailVerified;
+            // const uuid = user.uid;
            // console.log('user added', name, email, pphotoUrl, eemailVerified, uuid);
 
 
