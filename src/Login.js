@@ -26,14 +26,11 @@ const useStyles = makeStyles({
     },
     root: {
         '& .MuiTextField-root': {
-
             width: 200,
         },
     },
 });
 
-
-const checker = () => {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
             const name = user.displayName;
@@ -41,48 +38,64 @@ const checker = () => {
             const pphotoUrl = user.photoURL;
             const eemailVerified = user.emailVerified;
             const uuid = user.uid;
-            console.log(name, email, pphotoUrl, eemailVerified, uuid);
+           // console.log('user added', name, email, pphotoUrl, eemailVerified, uuid);
 
 
         } else {
-            console.log('no user');
+          //  console.log('no user');
         }
     });
+const checker = () => {
+//console.log(window.indexedDB);
+
 }
 
-const handleClick = e => {
-    firebase.auth().signInWithPopup(provider).then(function (result) {
+const login = e => {
+    firebase.auth().signInWithRedirect(provider).then(function (result) {
+       // console.log('login');
+
         // This gives you a Google Access Token. You can use it to access the Google API.
-      //  var token = result.credential.accessToken;
+        //  var token = result.credential.accessToken;
         // The signed-in user info.
-      //  var user = result.user;
+        //  var user = result.user;
         // ...
     }).catch(function (error) {
         // Handle Errors here.
-     //   var errorCode = error.code;
-      //  var errorMessage = error.message;
+        //   var errorCode = error.code;
+        //  var errorMessage = error.message;
         // The email of the user's account used.
-      //  var email = error.email;
+        //  var email = error.email;
         // The firebase.auth.AuthCredential type that was used.
-       // var credential = error.credential;
+        // var credential = error.credential;
         // ...
     });
 }
 
+
+
 export default function SimpleCard() {
     const classes = useStyles();
-  //  const bull = <span className={classes.bullet}>•</span>;
-
+    //  const bull = <span className={classes.bullet}>•</span>;
+    const signOut = () => {
+        firebase.auth().signOut().then(function () {
+          //  console.log('signout')
+        }).catch(function (error) {
+            // An error happened.
+        });
+    }
 
     return (
 
         <Container maxWidth="sm">
             <form className={classes.root} noValidate autoComplete="off">
-                <Button variant="contained" color="primary" onClick={handleClick}>
-                    Primary
+                <Button variant="contained" color="primary" onClick={login}>
+                    Login
                 </Button>
                 <Button variant="contained" color="primary" onClick={checker}>
                     Check
+                </Button>
+                <Button variant="contained" color="primary" onClick={signOut}>
+                    Logout
                 </Button>
             </form>
         </Container>

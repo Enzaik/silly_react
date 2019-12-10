@@ -10,10 +10,10 @@ import Login from './Login'
 
 
 class App extends Component {
-
   componentDidMount() {
+    console.log(window.localStorage);
+    
     const db = firebase.firestore();
-
     db.collection("users").add({
       first: "Alan",
       middle: "Mathison",
@@ -21,15 +21,15 @@ class App extends Component {
       born: 1912
     })
       .then(function (docRef) {
-        console.log("Document written with ID: ", docRef.id);
+        //  console.log("Document written with ID: ", docRef.id);
       })
       .catch(function (error) {
-        console.error("Error adding document: ", error);
+        // console.error("Error adding document: ", error);
       });
 
     db.collection("users").get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data().born}`);
+        // console.log(`${doc.id} => ${doc.data().born}`);
       });
     });
   }
@@ -40,9 +40,9 @@ class App extends Component {
         <>
           <ButtonAppBar />
           {/* <Switch> */}
-            <Route path='/' exact render={(props => <div>root</div>)} />
-            {/* <Route path='/login' exact render={(props => <div>login</div>)} /> */}
-            <Route path='/login' exact component={Login}/>
+          <Route path='/' component={Login} />
+          {/* <Route path='/login' exact render={(props => <div>login</div>)} /> */}
+          <Route path='/login' component={Login} />
           {/* </Switch> */}
         </>
       </div>

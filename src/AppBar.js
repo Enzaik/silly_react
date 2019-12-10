@@ -8,8 +8,10 @@ import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import SearchIcon from '@material-ui/icons/Search';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -18,6 +20,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+
+import firebase from 'firebase'
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -96,10 +100,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+
+
 export default function SearchAppBar() {
+  const [anchorEl, setAnchorEl] = React.useState(null);
   function handleClick() {
     setOpen(true);
   }
+  const handleMenu = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+
 
   function handleClose(event, reason) {
     if (reason === 'clickaway') {
@@ -110,12 +122,29 @@ export default function SearchAppBar() {
   }
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [userSt, setUserSt] = React.useState(false);
   const [state, setState] = React.useState({
     top: false,
     left: false,
     bottom: false,
     right: false,
   });
+
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      // console.log('userrrrrrrr', user.photoURL);
+      setUserSt(user.photoURL);
+       console.log('userrrr', userSt);
+
+    }
+    else {
+      console.log('user left from bar');
+      setUserSt('none');
+    }
+
+    ;
+
+  })
 
   const toggleDrawer = (side, open) => event => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -149,6 +178,13 @@ export default function SearchAppBar() {
           </ListItem>
         ))}
       </List>
+    </div>
+  );
+
+  const avatar = (
+    <div className={classes.root}>
+      {console.log('avatar', userSt)}
+      <Avatar alt="Remy Sharp" src={userSt} />
     </div>
   );
 
@@ -212,7 +248,18 @@ export default function SearchAppBar() {
               }}
               inputProps={{ 'aria-label': 'search' }}
             />
+
           </div>
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleMenu}
+            color="inherit"
+          >
+            
+            {avatar}
+          </IconButton>
         </Toolbar>
       </AppBar>
     </div>
