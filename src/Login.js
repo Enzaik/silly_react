@@ -45,10 +45,7 @@ const useStyles = makeStyles({
           //  console.log('no user');
         }
     });
-const checker = () => {
-//console.log(window.indexedDB);
 
-}
 
 const login = e => {
     firebase.auth().signInWithRedirect(provider).then(function (result) {
@@ -91,9 +88,7 @@ export default function SimpleCard() {
                 <Button variant="contained" color="primary" onClick={login}>
                     Login
                 </Button>
-                <Button variant="contained" color="primary" onClick={checker}>
-                    Check
-                </Button>
+
                 <Button variant="contained" color="primary" onClick={signOut}>
                     Logout
                 </Button>
