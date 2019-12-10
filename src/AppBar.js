@@ -23,7 +23,10 @@ import MailIcon from '@material-ui/icons/Mail';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import firebase from 'firebase'
+import firebase from 'firebase';
+import { Redirect, useHistory } from 'react-router-dom';
+
+
 
 const provider = new firebase.auth.GoogleAuthProvider();
 provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
@@ -109,6 +112,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function SearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const history = useHistory();
   function handleClick() {
     setOpen(true);
   }
@@ -130,34 +134,35 @@ export default function SearchAppBar() {
 
   const login = e => {
     firebase.auth().signInWithRedirect(provider).then(function (result) {
-       // console.log('login');
+      // console.log('login');
 
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        //  var token = result.credential.accessToken;
-        // The signed-in user info.
-        //  var user = result.user;
-        // ...
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      //  var token = result.credential.accessToken;
+      // The signed-in user info.
+      //  var user = result.user;
+      // ...
     }).catch(function (error) {
-        // Handle Errors here.
-        //   var errorCode = error.code;
-        //  var errorMessage = error.message;
-        // The email of the user's account used.
-        //  var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        // var credential = error.credential;
-        // ...
+      // Handle Errors here.
+      //   var errorCode = error.code;
+      //  var errorMessage = error.message;
+      // The email of the user's account used.
+      //  var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      // var credential = error.credential;
+      // ...
     });
     setAnchorEl(null);
-}
+  }
 
-const signOut = () => {
-  firebase.auth().signOut().then(function () {
-    //  console.log('signout')
-  }).catch(function (error) {
+  const signOut = () => {
+    firebase.auth().signOut().then(function () {
+      console.log('signout')
+    }).catch(function (error) {
       // An error happened.
-  });
-  setAnchorEl(null);
-}
+    });
+    history.push('/login')
+    setAnchorEl(null);
+  }
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -219,7 +224,7 @@ const signOut = () => {
 
   const avatar = (
     <div className={classes.root} onClick={handleMenu}>
-      
+
       <Avatar alt="Remy Sharp" src={userSt} />
     </div>
   );
@@ -232,8 +237,8 @@ const signOut = () => {
       open={Boolean(anchorEl)}
       onClose={handleCloseMenu}
     >
-     {!userSt ? <MenuItem onClick={login}>Log In</MenuItem> : <MenuItem >Profile</MenuItem> }
-     {userSt ? <MenuItem onClick={signOut}>Log Out</MenuItem> : null }
+      {!userSt ? <MenuItem onClick={login}>Log In</MenuItem> : <MenuItem >Profile</MenuItem>}
+      {userSt ? <MenuItem onClick={signOut}>Log Out</MenuItem> : null}
     </Menu>
   )
 
@@ -303,7 +308,7 @@ const signOut = () => {
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
-            
+
             color="inherit"
           >
             {avatar}
