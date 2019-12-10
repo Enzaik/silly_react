@@ -21,6 +21,8 @@
 /.firebase
 .firebaserc
 firebase.json
+firestore.rules
+public/404.html
 
 
 npm-debug.log*
