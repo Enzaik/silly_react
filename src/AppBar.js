@@ -151,6 +151,15 @@ export default function SearchAppBar() {
     setAnchorEl(null);
 }
 
+const signOut = () => {
+  firebase.auth().signOut().then(function () {
+    //  console.log('signout')
+  }).catch(function (error) {
+      // An error happened.
+  });
+  setAnchorEl(null);
+}
+
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [userSt, setUserSt] = React.useState(false);
@@ -228,8 +237,7 @@ export default function SearchAppBar() {
       onClose={handleCloseMenu}
     >
      {!userSt ? <MenuItem onClick={login}>Log In</MenuItem> : <MenuItem >Profile</MenuItem> }
-      <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
-      <MenuItem onClick={handleCloseMenu}>Logout</MenuItem>
+     {userSt ? <MenuItem onClick={signOut}>Log Out</MenuItem> : null }
     </Menu>
   )
 
